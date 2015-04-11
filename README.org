@@ -1,0 +1,29 @@
+#+TITLE:     hash-collector
+#+AUTHOR:    Richard Bäck
+#+EMAIL:     richard.baeck@openmailbox.org
+#+DATE:      2015-03-27 Fri
+#+DESCRIPTION:
+#+KEYWORDS:
+#+LANGUAGE:  en
+#+OPTIONS:   H:3 num:t toc:t \n:nil @:t ::t |:t ^:t -:t f:t *:t <:t
+#+OPTIONS:   TeX:t LaTeX:t skip:nil d:nil todo:t pri:nil tags:not-in-toc
+#+INFOJS_OPT: view:nil toc:nil ltoc:t mouse:underline buttons:0 path:http://orgmode.org/org-info.js
+#+EXPORT_SELECT_TAGS: export
+#+EXPORT_EXCLUDE_TAGS: noexport
+#+LINK_UP:
+#+LINK_HOME:
+#+XSLT:
+
+* What is it?
+/hash-collector/ is a simple applications which permuts a string with a
+specific length and persists all its different hashes.
+* What is it for?
+/hash-collector/'s purpose is to demonstrate how Common Lisp can be
+used in practice. The sense of such an application written in such a
+slow language like Common Lisp is excluded. Instead it supplies a non
+trival "hello world" example for new coming Lispers. Therefore it is a
+part (or extension) of [[https://github.com/ritschmaster/CL-Guide][CL-Guide]].
+* Used libraries
+- ironclad :: calculates hashes.
+- sqlite :: stores the calculated hashes and their plain text in a
+            simple SQLite database.
