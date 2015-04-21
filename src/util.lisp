@@ -20,6 +20,7 @@
 (in-package #:hash-collector)
 
 (defun vector-to-string (vec)
+  "Conveters a vector of numbers to a string."
   (declare (vector vec))
   (let ((str ""))
     (declare (string str))

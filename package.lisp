@@ -18,6 +18,10 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defpackage #:hash-collector
+  ;; the packages to use for this package
   (:use #:cl)
+
+  ;; the symbols (= functions, variables etc.) which should be
+  ;; available outside of this package
   (:export #:collect))
 

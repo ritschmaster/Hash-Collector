@@ -18,16 +18,23 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (asdf:defsystem #:hash-collector
-  :description "hash-collector is a simple applications which permuts a string with a
+  :description "HASH-COLLECTOR is a simple applications which permuts a string with a
 specific length and persists all its different hashes."
   :author "Richard Bäck <richard.baeck@openmailbox.org>"
   :license "GPLv3"
+
+  ;; library dependencies:
   :depends-on (#:sqlite
                #:ironclad)
+
+  ;; read in the :components one by one (otherwise for each component
+  ;; there you must use :depends-on)
   :serial t
-  :components ((:file "package")
-               (:module "src"
-                        :components
+
+  ;; the components of this application
+  :components ((:file "package") ; a file in the toplevel directory
+               (:module "src" ; declares the folder "src" as module
+                        :components ; files in the folder "src" to include
                         ((:file "util")
                          (:file "parameters")
                          (:file "password-hashes")

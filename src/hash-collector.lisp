@@ -44,19 +44,13 @@
                  (return-from permut ret-val)))))))
 
 (defun create-and-persist-hashes (str)
+  "Creates a new password-hashes object with STR as the slot PLAINTEXT. Afterwards it is persisted."
   (let ((hash (create-password-hashes str)))
     (persist hash))
   nil)
 
-;; (defun call-url (url)
-;;   (if (= (nth-value 1 (drakma:http-request (concatenate 'string
-;;                                                  *base-path*
-;;                                                  url)))
-;;            200)
-;;       url
-;;       nil))
-
 (defun collect (len)
+  "Starts to calculate all hashes for permuted strings with the length LEN."
   (connect-db *sqlite-db-path*)
   (permut len "" #'create-and-persist-hashes)
   (disconnect-db))

@@ -22,28 +22,37 @@
 (defvar *sqlite-db-path* (concatenate
                           'string
                           (namestring (truename "."))
-                          *sqlite-db-path-default*))
+                          *sqlite-db-path-default*)
+  "This variable points to the sqlite database. The path is the directory from where the lisp interpreter has been started.")
 (defvar *sqlite-persist-query-password-hashes*
-  *sqlite-persist-query-password-hashes-default*)
+  *sqlite-persist-query-password-hashes-default*
+  "The insert query template. It can be later fulled with values (to avoid SQL injection).")
 (defvar *sqlite-get-single-query-password-hashes*
-  *sqlite-get-single-query-password-hashes-default*)
-(defvar *sqlite-db* nil)
+  *sqlite-get-single-query-password-hashes-default*
+  "The select query template. It can be later fulled with values (to avoid SQL injection).")
+(defvar *sqlite-db* nil
+  "Holds the sqlite instance.")
 
 (defun connect-db (filename)
+  "Connects to a sqlite database with the path FILENAME and stores it in the variable *sqlite-db*."
   (setf *sqlite-db*
         (sqlite:connect *sqlite-db-path*)))
 
 (defun disconnect-db ()
+  "Disconnects the sqlite database stored in *sqlite-db*."
   (sqlite:disconnect *sqlite-db*))
 
-(defgeneric is-persisted (obj))
+(defgeneric is-persisted (obj)
+  (:documentation
+   "Method to ask if a specific object is available in the database"))
 (defmethod is-persisted ((obj password-hashes))
     (sqlite:execute-single
      *sqlite-db*
      *sqlite-get-single-query-password-hashes*
      (plaintext obj)))
 
-(defgeneric persist (obj))
+(defgeneric persist (obj)
+  (:documentation "Method to persist an object in the database."))
 (defmethod persist ((obj password-hashes))
   (when (not (is-persisted obj))
       (sqlite:execute-non-query
