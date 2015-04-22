@@ -23,6 +23,22 @@ used in practice. The sense of such an application written in such a
 slow language like Common Lisp is excluded. Instead it supplies a non
 trival "hello world" example for new coming Lispers. Therefore it is a
 part (or extension) of [[https://github.com/ritschmaster/CL-Guide][CL-Guide]].
+* How to use it
+You will have to install [[http://www.quicklisp.org/][Quicklisp]]. Afterwards you only have to start
+a terminal and run:
+#+BEGIN_SRC bash
+make
+make install
+#+END_SRC
+inside this directory. /make/ will generate a file called
+hash.db. This should be placed in the directory where you start your
+Lisp interpreter (most likely your home folder). Finally you can start
+collecting hashes by typing at your REPL:
+#+BEGIN_SRC lisp
+(defparameter *permutation-length* 3 "The length of the password to be calculated.")
+(ql:quickload "hash-collector")
+(hash-collector:collect *permutation-length*)
+#+END_SRC
 * Used libraries
 - ironclad :: calculates hashes.
 - sqlite :: stores the calculated hashes and their plain text in a
