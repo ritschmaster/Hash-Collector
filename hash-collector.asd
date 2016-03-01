@@ -24,21 +24,22 @@ specific length and persists all its different hashes."
   :license "GPLv3"
 
   ;; library dependencies:
-  :depends-on (#:sqlite#
-               #:ironclad
-               #:envy)
+  :depends-on (:sqlite
+               :ironclad
+               :envy)
 
   ;; read in the :components one by one (otherwise for each component
   ;; a ":depends-on" has to be used)
   :serial t
 
   ;; the components of this application
-  :components ((:file "package") ; a file in the toplevel directory
-               (:module "src" ; declares the folder "src" as module
+  :components ((:module "src" ; declares the folder "src" as module
                         :components ; files in the folder "src" to include
                         ((:file "util")
                          (:file "config")
                          (:file "password-hashes")
                          (:file "database")
-                         (:file "hash-collector")))))
+                         (:file "hash-collector")))
+               (:file "hash-collector") ; a file in the toplevel directory
+               ))
 

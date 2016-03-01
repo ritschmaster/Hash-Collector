@@ -17,11 +17,13 @@
 ;; along with hash-collector.  If not, see <http://www.gnu.org/licenses/>.
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defpackage #:hash-collector
+(defpackage hash-collector
   ;; the packages to use for this package
-  (:use #:cl)
+  (:use :cl)
+  (:shadowing-import-from :hash-collector.hash-collector
+                          :collect)
 
   ;; the symbols (= functions, variables etc.) which should be
   ;; available outside of this package
-  (:export #:collect))
+  (:export :collect))
 

@@ -17,11 +17,36 @@
 ;; along with hash-collector.  If not, see <http://www.gnu.org/licenses/>.
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(in-package #:hash-collector)
+(in-package :cl-user)
+(defpackage hash-collector.database
+  (:use :cl
+        :hash-collector.password-hashes)
+  (:import-from :sqlite
+                :connect
+                :disconnect
+                :execute-single
+                :execute-non-query)
+  (:import-from :envy
+                :config)
+  (:export :connect-db
+           :disconnect-db
+           :is-persisted
+           :persist
+           :*sqlite-db-path*))
+(in-package :hash-collector.database)
+
+;; The following variables are parameters. Parameters are variables
+;; whose value can't be changed. Those are are used for ultimately
+;; fixed values. Using parameters to set variables (defvar) is a good
+;; practise to be able to change dynamic global variables in runtime.
+(defparameter *sqlite-persist-query-password-hashes-default*
+  "insert into hashes (plaintext, md5, sha256) values (?, ?, ?)")
+(defparameter *sqlite-get-single-query-password-hashes-default*
+  "select hash_id from hashes where plaintext = ?")
 
 (defvar *sqlite-db-path* (getf
                           (getf
-                           (envy:config :hash-collector)
+                           (config :hash-collector.config)
                            :database-connection-spec)
                           :database-name)
   "This variable points to the sqlite database. The path is the directory from where the lisp interpreter has been started.")
@@ -37,28 +62,28 @@
 (defun connect-db (filename)
   "Connects to a sqlite database with the path FILENAME and stores it in the variable *sqlite-db*."
   (setf *sqlite-db*
-        (sqlite:connect *sqlite-db-path*)))
+        (connect *sqlite-db-path*)))
 
 (defun disconnect-db ()
   "Disconnects the sqlite database stored in *sqlite-db*."
-  (sqlite:disconnect *sqlite-db*))
+  (disconnect *sqlite-db*))
 
 (defgeneric is-persisted (obj)
   (:documentation
    "Method to ask if a specific object is available in the database"))
-(defmethod is-persisted ((obj password-hashes))
-    (sqlite:execute-single
-     *sqlite-db*
-     *sqlite-get-single-query-password-hashes*
-     (plaintext obj)))
+(defmethod is-persisted ((obj <password-hashes>))
+  (execute-single
+   *sqlite-db*
+   *sqlite-get-single-query-password-hashes*
+   (plaintext obj)))
 
 (defgeneric persist (obj)
   (:documentation "Method to persist an object in the database."))
-(defmethod persist ((obj password-hashes))
+(defmethod persist ((obj <password-hashes>))
   (when (not (is-persisted obj))
-      (sqlite:execute-non-query
-       *sqlite-db*
-       *sqlite-persist-query-password-hashes*
-       (plaintext obj)
-       (md5 obj)
-       (sha256 obj))))
+    (execute-non-query
+     *sqlite-db*
+     *sqlite-persist-query-password-hashes*
+     (plaintext obj)
+     (md5 obj)
+     (sha256 obj))))

@@ -17,10 +17,26 @@
 ;; along with hash-collector.  If not, see <http://www.gnu.org/licenses/>.
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(in-package #:hash-collector)
+(in-package :cl-user)
+(defpackage hash-collector.hash-collector
+  (:use :cl
+        :hash-collector.password-hashes
+        :hash-collector.database)
+  (:export :collect))
+(in-package :hash-collector.hash-collector)
+
+;; The following variables are parameters. Parameters are variables
+;; whose value can't be changed. Those are are used for ultimately
+;; fixed values. Using parameters to set variables (defvar) is a good
+;; practise to be able to change dynamic global variables in runtime.
+(defparameter *letters-default*
+  "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz")
+(defparameter *letters-with-numbers*
+  "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789")
+(defparameter *letters-german-with-numbers-with-punctuations*
+  "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789äöüÄÖÜ.-+?!")
 
 (defvar *letters* *letters-default*)
-; (defvar *base-path* *base-path-default*)
 
 (defun get-letters ()
   *letters*)

@@ -17,7 +17,11 @@
 ;; along with hash-collector.  If not, see <http://www.gnu.org/licenses/>.
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(in-package #:hash-collector)
+(in-package :cl-user)
+(defpackage hash-collector.util
+  (:use :cl)
+  (:export :vector-to-string))
+(in-package :hash-collector.util)
 
 (defun vector-to-string (vec)
   "Conveters a vector of numbers to a string."
